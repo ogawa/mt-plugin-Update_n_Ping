@@ -1,6 +1,6 @@
 # A plugin for sending "update pings" when updating entries
 #
-# Release 0.03 (Mar 5, 2005)
+# Release 0.04 (Mar 6, 2005)
 #
 # This software is provided as-is. You may use it for commercial or 
 # personal use. If you distribute it, please keep this notice intact.
@@ -15,10 +15,11 @@ $urls = [
 	];
 $LIMIT_ENTRIES = 15;
 
-if (MT->can('add_plugin')) {
+eval("use Storable;");
+if (!$@ && MT->can('add_plugin')) {
   require MT::Plugin;
   my $plugin = new MT::Plugin();
-  $plugin->name("Update-n-Ping Plugin 0.03");
+  $plugin->name("Update-n-Ping Plugin 0.04");
   $plugin->description("Send 'update pings' when updating entries");
   $plugin->doc_link("http://as-is.net/hacks/2005/02/update_n_ping_plugin.html");
   MT->add_plugin($plugin);
