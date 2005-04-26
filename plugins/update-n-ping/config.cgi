@@ -47,30 +47,34 @@ sub show_form {
     my (%param) = @_;
 
     my $author = $app->{author};
-    return $app->error("You cannot edit the settings for Update_n_Ping")
+    return $app->error("You cannot edit the settings for " . $PLUGIN_NAME)
 	unless $author->can_create_blog;
+
+    $app->set_language($author->preferred_language)
+	if $author && $author->preferred_language;
+    $app->{breadcrumbs} = [ { bc_name => $app->translate('Main Menu'),
+			      bc_uri => $app->mt_uri } ];
 
     require MT::Plugin;
     my $plugin = new MT::Plugin(name => $PLUGIN_NAME);
 
     defined($param{enabled} = $plugin->get_config_value('enabled'))
-      or $param{enabled} = 1;
+	or $param{enabled} = 1;
     defined($param{limit_entries} = $plugin->get_config_value('limit_entries'))
-      or $param{limit_entries} = 15;
+	or $param{limit_entries} = 15;
     my $t = $plugin->get_config_value('ping_urls');
     $param{ping_urls} = (defined $t && ref($t) eq 'ARRAY' && @$t) ?
-      join "\r\n", @$t : '';
+	join "\r\n", @$t : '';
 
-    $app->add_breadcrumb('Update-n-Ping Plugin');
+    $app->add_breadcrumb($PLUGIN_NAME);
     $app->build_page('update-n-ping.tmpl', \%param);
 }
 
 sub save_form {
     my $app = shift;
-    my $auth = $app->{author};
     my $q = $app->{query};
     my $author = $app->{author};
-    return $app->error("You cannot edit the settings for Nofollow") 
+    return $app->error("You cannot edit the settings for " . $PLUGIN_NAME)
 	unless $author->can_create_blog;
     $app->validate_magic() or return;
 

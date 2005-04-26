@@ -7,6 +7,7 @@
 #
 # Copyright (c) 2005 Hirotaka Ogawa
 
+package MT::Plugin::Update_n_Ping;
 use strict;
 use vars qw($PING_URLS $LIMIT_ENTRIES);
 
@@ -23,7 +24,7 @@ eval {
     $plugin->name("Update-n-Ping Plugin");
     $plugin->description("Send 'update pings' when updating entries");
     $plugin->doc_link("http://as-is.net/hacks/2005/02/update_n_ping_plugin.html");
-    $plugin->config_link("config.cgi");
+    $plugin->config_link("config.cgi") if MT->version_number >= 3.16;
     MT->add_plugin($plugin);
 };
 
