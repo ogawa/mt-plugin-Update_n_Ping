@@ -1,0 +1,46 @@
+<TMPL_INCLUDE NAME="header.tmpl">
+
+<!-- Begin main content -->
+
+<div id="cfg-prefs">
+
+<TMPL_IF NAME=MESSAGE>
+  <p class="message"><TMPL_VAR NAME=MESSAGE></p>
+</TMPL_IF>
+
+<p>The default Movable Type 3.1 does send 'update pings' if you post new entries or change entries' state from 'Draft' to 'Publish'. On other hand, MT3 does NOT send any update pings if modifying 'published' entries.</p>
+
+<p>This plugin enables MT to send update pings when updating published entries and adding newly published entries.</p>
+
+<p>For more details, see <a href="http://as-is.net/hacks/2005/02/update_n_ping_plugin.html">"Ogawa::Hacks: Update-n-Ping Plugin"</a>. Especially for Japanese readers, see <a href="http://as-is.net/blog/archives/000976.html">"Ogawa::Memoranda: Update-n-Ping Plugin"</a>.</p>
+
+<form method="post" action="<TMPL_VAR NAME=SCRIPT_URL>">
+<input type="hidden" name="__mode" value="save" />
+<input type="hidden" name="magic_token" value="<TMPL_VAR NAME=MAGIC_TOKEN>" /> 
+
+<h3>Update-n-Ping Options</h3>
+
+<div class="field">
+<h4><input type="checkbox" name="enabled" value="1" id="enabled" <TMPL_IF NAME=ENABLED>checked="checked"</TMPL_IF> /> <label for="enabled">Enable Plugin</label></h4>
+</div>
+
+<div class="field">
+<h4><label for="limit_entries">Limit Entries:</label> <input name="limit_entries" id="limit_entries" size="5" value="<TMPL_VAR NAME=LIMIT_ENTRIES>" /></h4>
+<p>If you wish to send 'update pings' when modifying latest <em>N</em> entries, enter the "<em>N</em>" value here. (Default = 15)</p>
+</div>
+
+<div class="field">
+<h4><label for="ping_urls">Update Ping URL(s):</label></h4>
+<p>(Separate URLs with a carriage return.)<br />
+<textarea name="ping_urls" id="ping_urls" rows="4" cols="50"><TMPL_VAR NAME=PING_URLS ESCAPE=HTML></textarea>
+</p>
+</div>
+
+<p>
+<input type="submit" value="Update" />
+</p>
+</form>
+
+</div>
+
+<TMPL_INCLUDE NAME="footer.tmpl">
