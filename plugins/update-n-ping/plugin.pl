@@ -1,6 +1,6 @@
 # A plugin for sending "update pings" when updating entries
 #
-# Release 0.10 (Apr 25, 2005)
+# Release 0.11 (Jun 10, 2005)
 #
 # This software is provided as-is. You may use it for commercial or 
 # personal use. If you distribute it, please keep this notice intact.
@@ -22,14 +22,16 @@ eval {
     require MT::Plugin;
     $plugin = new MT::Plugin();
     $plugin->name("Update-n-Ping Plugin");
-    $plugin->description("Send 'update pings' when updating entries");
+    $plugin->description("Send 'update pings' when updating entries. Version 0.11");
     $plugin->doc_link("http://as-is.net/hacks/2005/02/update_n_ping_plugin.html");
     $plugin->config_link("config.cgi") if MT->version_number >= 3.16;
     MT->add_plugin($plugin);
 };
 
 if (MT->can('add_callback')) {
-    MT->add_callback('AppPostEntrySave', 10, "Send 'update pings' when updating entries", \&update_n_ping);
+    my $mt = MT->instance;
+    MT->add_callback((ref $mt eq 'MT::App::CMS' ? 'AppPostEntrySave' : 'MT::Entry::post_save'),
+		     10, $plugin, \&update_n_ping);
 }
 
 sub update_n_ping {
