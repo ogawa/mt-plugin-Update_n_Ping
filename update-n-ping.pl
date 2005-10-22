@@ -70,9 +70,8 @@ sub update_n_ping {
     require MT::Blog;
     require MT::XMLRPC;
     my $blog = MT::Blog->load($blog_id);
-
     for my $url (@ping_urls) {
-	my $msg = "Update-n-Ping[" . $blog_id . ":" . $entry_id . "] $url ";
+	my $msg = "Update-n-Ping[$blog_id:$entry_id] $url ";
 	if (MT::XMLRPC->ping_update('weblogUpdates.ping', $blog, $url)) {
 	    $msg .= 'suceeded.';
 	} else {
