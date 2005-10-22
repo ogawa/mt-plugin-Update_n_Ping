@@ -1,15 +1,16 @@
 Update-n-Ping Plugin
 
-## THE FOLLOWING EXPLANATION IS FOR ONLY MT 3.1x. ##
+IF YOU ARE USING MT 3.1X, PLEASE CONSULT THE INSIDE OF "3.1"
+DIRECTORY.  THE FOLLOWING EXPLANATION IS FOR ONLY MT 3.2+.
 
 * DESCRIPTION
 
-The default Movable Type version 3.1 does send 'update pings' if you
+The default Movable Type version 3 does send 'update pings' if you
 post new entries or change entries' state from 'Draft' to
 'Publish'. On other hand, MT3 does NOT send any update pings if modify
 'published' entries.
 
-This plugin enables MT to send update pings when updating published
+This plugin enables MT3 to send update pings when updating published
 entries and adding newly published entries.
 
 
@@ -22,15 +23,8 @@ to the latest release.
 
 * INSTALLATION
 
-The following files are provided with this distribution:
-
-    plugins/update-n-ping/plugin.pl
-    plugins/update-n-ping/config.cgi
-    plugins/update-n-ping/tmpl/update-n-ping.tmpl
-
-To install this plugin, upload or copy these files into your Movable
-Type directory and set the permission of the "config.cgi" script to
-0755 (be executable).
+To install this plugin, upload or copy "update-n-ping.pl" into your
+"plugins" directory of Movable Type.
 
 After proper installation, you will see a new "Update-n-Ping" plugin
 listed on the Main Menu of your Movable Type.
@@ -38,8 +32,7 @@ listed on the Main Menu of your Movable Type.
 
 * UNINSTALLATION
 
-To uninstall this plugin, remove the directories and files added by
-the installation process.
+To uninstall this plugin, just remove "update-n-ping.pl".
 
 
 * SEE ALSO
