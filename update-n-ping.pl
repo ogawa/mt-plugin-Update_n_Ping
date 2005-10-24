@@ -20,9 +20,9 @@ my $plugin = MT::Plugin::Update_n_Ping->new({
     author_name => 'Hirotaka Ogawa',
     author_link => 'http://profile.typekey.com/ogawa/',
     version => $VERSION,
-    config_template => \&template,
+    blog_config_template => \&template,
     settings => new MT::PluginSettings([
-					['unp_ping_urls', { Default => 'http://rpc.pingomatic.com/' }],
+					['unp_ping_urls', { Default => '' }],
 					['unp_limit_entries', { Default => 15 }]
 					])
     });
@@ -39,8 +39,7 @@ sub update_n_ping {
     my $entry_id = $entry->id;
     my $blog_id = $entry->blog_id;
 
-    my $config = $plugin->get_config_hash('blog:' . $blog_id) || $plugin->get_config_hash()
-	or return;
+    my $config = $plugin->get_config_hash("blog:$blog_id") or return;
     my $limit_entries = $config->{unp_limit_entries} || 0;
     my $ping_urls = $config->{unp_ping_urls} || '';
     my @ping_urls = ();
@@ -99,7 +98,7 @@ sub template {
 <div class="label"><label for="unp_ping_urls">Update Ping URL(s):</label></div>
 <div class="field">
 <textarea name="unp_ping_urls" id="unp_ping_urls" rows="4" cols="50"><TMPL_VAR NAME=UNP_PING_URLS ESCAPE=HTML></textarea>
-<p>(Separate URLs with a carriage return.)</p>
+<p>e.g., http://rpc.pingomatic.com/ (separate URLs with a carriage return)</p>
 </div>
 </div>
 EOT
