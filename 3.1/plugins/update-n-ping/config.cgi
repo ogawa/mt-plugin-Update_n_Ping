@@ -2,7 +2,7 @@
 #
 # config.cgi: Configuration script for Update-n-Ping Plugin
 #
-# Release 0.10 (Apr 25, 2005)
+# $Id$
 #
 # This software is provided as-is. You may use it for commercial or 
 # personal use. If you distribute it, please keep this notice intact.

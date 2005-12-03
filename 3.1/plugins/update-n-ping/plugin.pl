@@ -1,6 +1,6 @@
 # A plugin for sending "update pings" when updating entries
 #
-# Release 0.11 (Jun 10, 2005)
+# $Id$
 #
 # This software is provided as-is. You may use it for commercial or 
 # personal use. If you distribute it, please keep this notice intact.
@@ -36,7 +36,10 @@ if (MT->can('add_callback')) {
 
 sub update_n_ping {
     my ($eh, $app, $entry) = @_;
-    return if $entry->status != MT::Entry::RELEASE();
+    return if !UNIVERSAL::isa($entry, 'MT::Entry') || $entry->status != MT::Entry::RELEASE();
+
+    my $entry_id = $entry->id;
+    my $blog_id = $entry->blog_id;
 
     my $limit_entries = $LIMIT_ENTRIES;
     my @ping_urls = @$PING_URLS;
@@ -52,14 +55,14 @@ sub update_n_ping {
     }
 
     if ($limit_entries) {
-	my $iter = MT::Entry->load_iter({ blog_id => $entry->blog_id,
+	my $iter = MT::Entry->load_iter({ blog_id => $blog_id,
 					  status => MT::Entry::RELEASE() },
 					{ sort => 'created_on',
 					  direction => 'descend',
 					  limit => $limit_entries });
 	my $is_recent = 0;
 	while (my $e = $iter->()) {
-	    if ($e->id == $entry->id) {
+	    if ($e->id == $entry_id) {
 		$is_recent = 1;
 		last;
 	    }
@@ -67,18 +70,21 @@ sub update_n_ping {
 	return unless $is_recent;
     }
 
-    require MT::Blog;
     require MT::XMLRPC;
-    my $blog = MT::Blog->load($entry->blog_id);
-
+    require MT::Blog;
+    my $blog = MT::Blog->load($blog_id);
     for my $url (@ping_urls) {
-	my $msg = "Update-n-Ping[" . $entry->blog_id . ":" . $entry->id . "] $url ";
+	my $msg = "Update-n-Ping[$blog_id:$entry_id] $url ";
 	if (MT::XMLRPC->ping_update('weblogUpdates.ping', $blog, $url)) {
 	    $msg .= 'suceeded.';
 	} else {
 	    $msg .= 'failed. ' . MT::XMLRPC->errstr;
 	}
-	$app->log($msg);
+	require MT::Log;
+	my $log = MT::Log->new;
+	$log->blog_id($blog_id);
+	$log->message($msg);
+	$log->save or die $log->errstr;
     }
 }
 
