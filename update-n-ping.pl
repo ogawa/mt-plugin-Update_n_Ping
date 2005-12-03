@@ -11,7 +11,7 @@ package MT::Plugin::Update_n_Ping;
 use strict;
 use base 'MT::Plugin';
 use vars qw($VERSION);
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 my $plugin = MT::Plugin::Update_n_Ping->new({
     name => 'Update-n-Ping',
@@ -34,7 +34,7 @@ MT->add_callback((ref $mt eq 'MT::App::CMS' ? 'AppPostEntrySave' : 'MT::Entry::p
 
 sub update_n_ping {
     my ($eh, $app, $entry) = @_;
-    return if $entry->status != MT::Entry::RELEASE();
+    return if !UNIVERSAL::isa($entry, 'MT::Entry') || $entry->status != MT::Entry::RELEASE();
 
     my $entry_id = $entry->id;
     my $blog_id = $entry->blog_id;
@@ -66,8 +66,8 @@ sub update_n_ping {
 	return unless $is_recent;
     }
 
-    require MT::Blog;
     require MT::XMLRPC;
+    require MT::Blog;
     my $blog = MT::Blog->load($blog_id);
     for my $url (@ping_urls) {
 	my $msg = "Update-n-Ping[$blog_id:$entry_id] $url ";
@@ -76,7 +76,11 @@ sub update_n_ping {
 	} else {
 	    $msg .= 'failed. ' . MT::XMLRPC->errstr;
 	}
-	$app->log($msg);
+	require MT::Log;
+	my $log = MT::Log->new;
+	$log->blog_id($blog_id);
+	$log->message($msg);
+	$log->save or die $log->errstr;
     }
 }
 
