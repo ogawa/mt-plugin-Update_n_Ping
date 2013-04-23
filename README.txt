@@ -37,9 +37,6 @@ To uninstall this plugin, just remove "update-n-ping.pl".
 
 * SEE ALSO
 
-http://as-is.net/hacks/2005/02/update_n_ping_plugin.html
-http://as-is.net/blog/archives/000976.html (for Japanese readers)
-
 
 * LICENSE
 
